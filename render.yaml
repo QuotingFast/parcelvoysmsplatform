@@ -62,10 +62,13 @@ services:
         sync: false
       - key: AUTH_BASIC_PASSWORD
         sync: false
+
   - type: redis
     name: lightning
+    plan: standard # upgraded from default to standard (512 MB)
+    maxmemoryPolicy: allkeys-lru # prevents Redis crashes when memory limit is hit
     ipAllowList: []
-    maxmemoryPolicy: noeviction # optional (defaults to allkeys-lru)
+
   - type: pserv
     name: mysql
     plan: standard
@@ -77,11 +80,11 @@ services:
       mountPath: /var/lib/mysql
       sizeGB: 10
     envVars:
-    - key: MYSQL_ROOT_PASSWORD
-      generateValue: true
-    - key: MYSQL_DATABASE
-      value: parcelvoy
-    - key: MYSQL_USER
-      value: parcelvoy
-    - key: MYSQL_PASSWORD
-      generateValue: true
+      - key: MYSQL_ROOT_PASSWORD
+        generateValue: true
+      - key: MYSQL_DATABASE
+        value: parcelvoy
+      - key: MYSQL_USER
+        value: parcelvoy
+      - key: MYSQL_PASSWORD
+        generateValue: true
